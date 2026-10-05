@@ -13,13 +13,15 @@ datasource db {
 
 // Gast: boekt accomodaties en schrijft reviews
 model User {
-  id          String @id @default(uuid())
-  username    String @unique
+  id          String    @id @default(uuid())
+  username    String    @unique
   password    String
   name        String
   email       String
   phoneNumber String
   pictureUrl  String
+  reviews     Review[]
+  bookings    Booking[]
 }
 
 // Host: Eigenaar van de accomodatie
@@ -32,6 +34,8 @@ model Host {
   aboutMe     String
   phoneNumber String
   pictureUrl  String
+
+  listings Property[]
 }
 
 // Property: Accomodatie die een host verhuurd
@@ -46,6 +50,13 @@ model Property {
   bathRoomCount Int
   maxGuestCount Int
   rating        Int
+
+  host      Host      @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  bookings  Booking[]
+  reviews   Review[]
+  amenities Amenity[]
+
+  @@index([hostId])
 }
 
 // Booking: geeft aan welke accomodatie geboekt is en voor wanneer
@@ -58,6 +69,12 @@ model Booking {
   numberOfGuests Int
   totalPrice     Float // plaatje zegt int / data bevat decimalen: daarom Float
   bookingStatus  String
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([propertyId])
 }
 
 // Review: wat vinden klanten ervan > ervaringen
@@ -67,6 +84,12 @@ model Review {
   propertyId String
   rating     Int
   comment    String
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([propertyId])
 }
 
 // Amenity: extra toevoegingen (opties) aan de accomodaties
@@ -74,4 +97,6 @@ model Review {
 model Amenity {
   id   String @id @default(uuid())
   name String @unique
+
+  properties Property[]
 }
