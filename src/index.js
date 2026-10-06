@@ -1,5 +1,7 @@
+import "dotenv/config";
 import express from "express";
 import usersRouter from "./routes/users.js";
+import loginRouter from "./routes/login.js";
 
 const app = express();
 
@@ -8,6 +10,8 @@ app.use(express.json());
 
 // Routes
 app.use("/users", usersRouter);
+
+app.use("/login", loginRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");

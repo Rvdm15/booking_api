@@ -4,6 +4,7 @@ import getUserById from "../services/users/getUserById.js";
 import createUser from "../services/users/createUser.js";
 import updateUserById from "../services/users/updateUserById.js";
 import deleteUserById from "../services/users/deleteUserById.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 // Alle users ophalen
@@ -31,7 +32,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Nieuwe user toevoegen
-router.post("/", async (req, res, next) => {
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { username, password, name, email, phoneNumber, pictureUrl } =
       req.body;
@@ -51,7 +52,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // User wijzigen
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const id = await updateUserById(req.params.id, req.body);
     if (!id) {
@@ -65,7 +66,7 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // User verwijderen
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
     const id = await deleteUserById(req.params.id);
     if (!id) {
