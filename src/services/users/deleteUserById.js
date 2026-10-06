@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-// Verwijdert een UserActivation. Geeft id of null terug (als user niet bestaat)
+// Verwijdert een user. Geeft id of null terug (als user niet bestaat)
 
 const deleteUserById = async (id) => {
   const prisma = new PrismaClient();

@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import usersRouter from "./routes/users.js";
 import loginRouter from "./routes/login.js";
+import hostsRouter from "./routes/hosts.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use("/users", usersRouter);
 
 app.use("/login", loginRouter);
+app.use("/hosts", hostsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");
