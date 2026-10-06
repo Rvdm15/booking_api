@@ -1,0 +1,82 @@
+import express from "express";
+import getUsers from "../services/users/getUsers.js";
+import getUserById from "../services/users/getUserById.js";
+import createUser from "../services/users/createUser.js";
+import updateUserById from "../services/users/updateUserById.js";
+import deleteUserById from "../services/users/deleteUserById.js";
+
+const router = express.Router();
+// Alle users ophalen
+router.get("/", async (req, res, next) => {
+  try {
+    const users = await getUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Eén user ophalen
+router.get("/:id", async (req, res, next) => {
+  try {
+    const user = await getUserById(req.params.id);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(200).json(user);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Nieuwe user toevoegen
+router.post("/", async (req, res, next) => {
+  try {
+    const { username, password, name, email, phoneNumber, pictureUrl } =
+      req.body;
+    const newUser = await createUser(
+      username,
+      password,
+      name,
+      email,
+      phoneNumber,
+      pictureUrl,
+    );
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// User wijzigen
+router.put("/:id", async (req, res, next) => {
+  try {
+    const id = await updateUserById(req.params.id, req.body);
+    if (!id) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(200).json({ message: "User updated" });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// User verwijderen
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const id = await deleteUserById(req.params.id);
+    if (!id) {
+      res.status(404).json({
+        message: "User not found",
+      });
+    } else {
+      res.status(200).json({ message: "User deleted" });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+export default router;

@@ -1,0 +1,12 @@
+import { PrismaClient } from "@prisma/client";
+
+// Haalt één user op via het id, zonder wachtwoord
+const getUserById = async (id) => {
+  const prisma = new PrismaClient();
+  const user = await prisma.user.findUnique({
+    where: { id },
+    omit: { password: true },
+  });
+  return user;
+};
+export default getUserById;
