@@ -5,6 +5,7 @@ import loginRouter from "./routes/login.js";
 import hostsRouter from "./routes/hosts.js";
 import propertiesRouter from "./routes/properties.js";
 import bookingsRouter from "./routes/bookings.js";
+import reviewsRouter from "./routes/reviews.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/login", loginRouter);
 app.use("/hosts", hostsRouter);
 app.use("/properties", propertiesRouter);
 app.use("/bookings", bookingsRouter);
+app.use("/reviews", reviewsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");
