@@ -10,7 +10,8 @@ const router = express.Router();
 // Alle hosts ophalen
 router.get("/", async (req, res, next) => {
   try {
-    const hosts = await getHosts();
+    const { name } = req.query;
+    const hosts = await getHosts(name);
     res.status(200).json(hosts);
   } catch (error) {
     next(error);
