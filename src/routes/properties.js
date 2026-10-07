@@ -46,6 +46,22 @@ router.post("/", authMiddleware, async (req, res, next) => {
       hostId,
       rating,
     } = req.body;
+
+    // Controle: ontbreekt er een verplicht veld? Dan 400
+    if (
+      !title ||
+      !description ||
+      !location ||
+      !pricePerNight ||
+      !bedroomCount ||
+      !bathRoomCount ||
+      !maxGuestCount ||
+      !hostId ||
+      !rating
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
     const newProperty = await createProperty(
       title,
       description,

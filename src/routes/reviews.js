@@ -35,6 +35,11 @@ router.get("/:id", async (req, res, next) => {
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { userId, propertyId, rating, comment } = req.body;
+
+    // Controle: ontbreekt er een verplicht veld? Dan foutcode 400
+    if (!userId || !propertyId || !rating || !comment) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
     const newReview = await createReview(userId, propertyId, rating, comment);
 
     res.status(201).json(newReview);

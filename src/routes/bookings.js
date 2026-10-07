@@ -44,6 +44,19 @@ router.post("/", authMiddleware, async (req, res, next) => {
       totalPrice,
       bookingStatus,
     } = req.body;
+
+    if (
+      !userId ||
+      !propertyId ||
+      !checkinDate ||
+      !checkoutDate ||
+      !numberOfGuests ||
+      !totalPrice ||
+      !bookingStatus
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
     const newBooking = await createBooking(
       userId,
       propertyId,

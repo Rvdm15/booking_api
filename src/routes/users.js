@@ -37,6 +37,19 @@ router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { username, password, name, email, phoneNumber, pictureUrl } =
       req.body;
+
+    // Controle: ontbreekt er een verplicht veld? Dan 400
+    if (
+      !username ||
+      !password ||
+      !name ||
+      !email ||
+      !phoneNumber ||
+      pictureUrl
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
     const newUser = await createUser(
       username,
       password,
