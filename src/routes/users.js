@@ -45,7 +45,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
       !name ||
       !email ||
       !phoneNumber ||
-      pictureUrl
+      !pictureUrl
     ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
