@@ -12,6 +12,10 @@ router.get("/", async (req, res, next) => {
   try {
     const { userId } = req.query;
     const bookings = await getBookings(userId);
+    // Filter gebruikt maar niets gevonden? Dan 404
+    if (userId && bookings.length === 0) {
+      return res.status(404).json({ message: "No bookings found" });
+    }
     res.status(200).json(bookings);
   } catch (error) {
     next(error);

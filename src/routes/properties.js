@@ -12,6 +12,10 @@ router.get("/", async (req, res, next) => {
   try {
     const { location, pricePerNight } = req.query;
     const properties = await getProperties(location, pricePerNight);
+    // Filter gebruikt maar niets gevonden? Dan 404
+    if ((location || pricePerNight) && properties.length === 0) {
+      return res.status(404).json({ message: "No properties found" });
+    }
     res.status(200).json(properties);
   } catch (error) {
     next(error);

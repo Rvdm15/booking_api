@@ -12,6 +12,10 @@ router.get("/", async (req, res, next) => {
   try {
     const { username, email } = req.query;
     const users = await getUsers(username, email);
+    // Filter gebruikt maar niets gevonden? Dan 404
+    if ((username || email) && users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
     res.status(200).json(users);
   } catch (error) {
     next(error);

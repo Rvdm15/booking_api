@@ -12,6 +12,10 @@ router.get("/", async (req, res, next) => {
   try {
     const { name } = req.query;
     const hosts = await getHosts(name);
+    // Filter gebruikt maar niets gevonden? Dan 404
+    if (name && hosts.length === 0) {
+      return res.status(404).json({ message: "No hosts found" });
+    }
     res.status(200).json(hosts);
   } catch (error) {
     next(error);
