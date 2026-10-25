@@ -70,6 +70,10 @@ router.post("/", authMiddleware, async (req, res, next) => {
 
     res.status(201).json(newHost);
   } catch (error) {
+    // Prisma-foutcode P2002: unieke waarde bestaat al (hier: username)
+    if (error.code === "P2002") {
+      return res.status(409).json({ message: "Username already exists" });
+    }
     next(error);
   }
 });
